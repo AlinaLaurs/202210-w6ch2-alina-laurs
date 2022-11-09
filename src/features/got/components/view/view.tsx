@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { rootState } from '../../../../infrastructure/store/store';
 import * as ac from '../../reducer/action.creators';
-import { charactersList } from '../../data/ characters';
+import { CharactersData } from '../../data/data';
+import { List } from '../list/list';
+import { getStore, setStore } from '../service/storage';
 
 export function View() {
     // const [first, setfirst] = useState([]);
@@ -10,38 +12,85 @@ export function View() {
     const dispatcher = useDispatch();
 
     useEffect(() => {
-        dispatcher(ac.loadActionCreator(charactersList));
+        dispatcher(
+            ac.loadActionCreator(
+                getStore().length === 0 ? CharactersData : getStore()
+            )
+        );
     }, [dispatcher]);
 
+    useEffect(() => {
+        setStore(characters);
+    }, [characters]);
+
+    const initialForm = {
+        id: 0,
+        name: '',
+        family: '',
+        age: '',
+        lifeStatus: true,
+    };
+
+    const [form, setForm] = useState(initialForm);
+
+    const handleClick = (ev: SyntheticEvent) => {
+        ev.preventDefault();
+        if (form.name === '' || form.family === '') {
+            return;
+        }
+        dispatcher(ac.addActionCreator(form));
+        setForm(initialForm);
+    };
+
+    const handleForm = (ev: SyntheticEvent) => {
+        const target = ev.target as HTMLFormElement;
+        setForm({
+            ...form,
+            [target.name]: target.value,
+        });
+    };
+
     return (
-        <>
+        <div>
+            <List data={characters} dispatcher={dispatcher}></List>
             <form>
                 <div>
-                    <input type="text" id="name" placeholder="Name" required />
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Name"
+                        required
+                        value={form.name}
+                        onInput={handleForm}
+                    />
                 </div>
                 <div>
-                    <input type="text" id="family" placeholder="Family" />
+                    <input
+                        type="text"
+                        id="family"
+                        placeholder="Family"
+                        value={form.family}
+                        onInput={handleForm}
+                    />
                 </div>
                 <div>
-                    <input type="text" id="age" placeholder="Age" />
+                    <input
+                        type="number"
+                        id="age"
+                        placeholder="Age"
+                        value={form.age}
+                        onInput={handleForm}
+                    />
                 </div>
                 <div>
                     {' '}
                     Is alive?
-                    <input type="checkbox" id="isAlive" />
+                    <input type="checkbox" id="isAlive" onInput={handleForm} />
                 </div>
-                <button type="submit">Save</button>
+                <button type="submit" onClick={handleClick}>
+                    SAVE
+                </button>
             </form>
-            <ul>
-                {characters.map((item) => (
-                    <div>
-                        <p>Name: {item.name}</p>
-                        <p>Family: {item.family}</p>
-                        <p>Age: {item.age}</p>
-                        <p>Life status: {item.lifeStatus}</p>
-                    </div>
-                ))}
-            </ul>
-        </>
+        </div>
     );
 }

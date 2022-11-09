@@ -1,10 +1,11 @@
-import { Character } from './../models/character';
+import { CharactersData } from './../data/data';
+import { CharacterType } from './../models/character';
 import { createReducer } from '@reduxjs/toolkit';
 import * as ac from './action.creators';
 
-const initialState: Array<Character> = [];
+const initialState: CharacterType[] = CharactersData;
 
-export const characterReducer = createReducer(initialState, (builder) => {
+export const CharacterReducer = createReducer(initialState, (builder) => {
     builder.addCase(ac.loadActionCreator, (_state, action) => action.payload);
     builder.addCase(ac.addActionCreator, (state, action) => [
         ...state,
@@ -12,11 +13,11 @@ export const characterReducer = createReducer(initialState, (builder) => {
     ]);
     builder.addCase(ac.updateActionCreator, (state, action) =>
         state.map((item) =>
-            item.id === action.payload.id ? action.payload : item
+            item.name === action.payload.name ? action.payload : item
         )
     );
     builder.addCase(ac.deleteActionCreator, (state, action) =>
-        state.filter((item) => item.id !== action.payload.id)
+        state.filter((item) => item.name !== action.payload.name)
     );
     builder.addDefaultCase((state) => state);
 });
