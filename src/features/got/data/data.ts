@@ -1,4 +1,4 @@
-export const charactersList = [
+export const CharactersData = [
     {
         id: 1,
         name: 'Joffrey',
