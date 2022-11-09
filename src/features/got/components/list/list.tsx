@@ -11,7 +11,7 @@ export function List({
 }) {
     return (
         <section>
-            <ul>
+            <div>
                 {data.map((item, index) => (
                     <ListItem
                         key={index}
@@ -20,7 +20,7 @@ export function List({
                         characters={data}
                     ></ListItem>
                 ))}
-            </ul>
+            </div>
         </section>
     );
 }

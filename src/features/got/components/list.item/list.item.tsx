@@ -18,11 +18,12 @@ export function ListItem({
     };
 
     return (
-        <li>
+        <div>
             <h2>{item.name}</h2>
             <p>{item.family}</p>
             <p>Age: {item.age}</p>
+            <p>Life status: {item.lifeStatus}</p>
             <button onClick={handleDelete}>Delete</button>
-        </li>
+        </div>
     );
 }
