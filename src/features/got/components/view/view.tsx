@@ -52,14 +52,15 @@ export function View() {
 
     return (
         <div>
+            <h1>Game of Thrones</h1>
             <List data={characters} dispatcher={dispatcher}></List>
             <form>
                 <div>
                     <input
                         type="text"
+                        name="name"
                         id="name"
                         placeholder="Name"
-                        required
                         value={form.name}
                         onInput={handleForm}
                     />
@@ -67,6 +68,7 @@ export function View() {
                 <div>
                     <input
                         type="text"
+                        name="family"
                         id="family"
                         placeholder="Family"
                         value={form.family}
@@ -76,6 +78,7 @@ export function View() {
                 <div>
                     <input
                         type="number"
+                        name="age"
                         id="age"
                         placeholder="Age"
                         value={form.age}
